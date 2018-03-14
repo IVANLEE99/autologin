@@ -12,7 +12,7 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["jquery.min.js","myscript.js"]
+      "js": ["jquery.min.js","jquery.cookie.js","bililiteRange.js","jquery.sendkeys.js","myscript.js"]
     }
   ],
   "permissions": [
