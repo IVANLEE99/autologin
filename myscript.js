@@ -1,116 +1,131 @@
-$(function () {
-	// alert('$');
-	console.log(location)
-	if (location.host=='www.cqvip.com') {
-		$('form input[name="Username"]').focus().val('871246995@qq.com');
-		$('form input[name="Password"]').focus().val('654321');
-		$('form input[type="submit"]').click();
-		console.log($('form input[name="Username"]').val())
-		console.log($('form input[name="Password"]').val())
-	}
-	if (location.host=='manager-service.tis.iyorhe.com') {
+function autologin() {
+        var input =  document.getElementsByTagName("input")
+        console.log(input)
+        // let event = new Event('input', { bubbles: true });
+        var event = new Event('input', { bubbles: true });
+        // event.simulated = true;
+        input.email.value = "user@keystonejs.com"
+        input.email.dispatchEvent(event);
+        input.password.value = "admin"
+        input.password.dispatchEvent(event);
+        document.querySelector("button").click()
+  }
+// autologin();
 
-		fireEvent('email','ivanlee99@163.com');
-		fireEvent('password','lee');
+// $(function () {
+//   // alert('$');
+//   console.log(location)
+//   var websites = [
+//     {
+//       user_name:'email',
+//       user_value:'user@keystonejs.com',
+//       password_name:'password',
+//       password_value:'admin',
+//       loginUrl:'http://manager-service.tis.iyorhe.com/keystone/signin'
+//     },
+//     {
+//       user_name:'username',
+//       user_value:'871246995@qq.com',
+//       password_name:'password',
+//       password_value:'654321',
+//       loginUrl:'http://kns.cnki.net/kns/logindigital.aspx?ParentLocation=http://www.cnki.net'
+//     }
+//   ]
+//   for (let i = 0; i < websites.length; i++) {
+//     if (websites[i].loginUrl.indexOf(location.host)>-1) {
+//       if (location.href!=websites[i].loginUrl) {
+//         return location.href = websites[i].loginUrl;
+//       }
+//       autologinWebsite(websites[i]);
+//       break;
+//     }
+//   }
+// });
 
-		setTimeout(function () {
-			document.querySelector('form button[type="submit"]').click();
-		},5000);
-		console.log($('form input[name="email"]').val())
-		console.log($('form input[type="password"]').val())
-		// postForm('http://manager-service.tis.iyorhe.com/keystone/api/session/signin','email=user@keystonejs.com&&password=admin')
-	}
-	if (location.host=='www.incopat.com') {
-		$('form input[name="username"]').focus().val('infinitusPD05');
-		$('form input[type="password"]').focus().val('infinitus2017');
-		$('form input#loginBtn').click();
-		console.log($('form input[name="username"]').val())
-		console.log($('form input[type="password"]').val())
-		// username=infinitusPD05&&password=infinitus2017
-	}
-	// http://www.incopat.com/dologin
-});
-
-function good() {
-		$('form input[name="email"]').attr('value','ivanlee99@163.com');
-		$('form input[type="password"]').attr('value','lee');
-		$('form input[name="email"]').val('ivanlee99@163.com');
-		$('form input[type="password"]').val('lee');
-		// $('form').attr('method','POST').attr('action','http://manager-service.tis.iyorhe.com/keystone/api/session/signin').submit();
-		$.ajax({
-
-		    type: "post",
-
-		    url:"http://manager-service.tis.iyorhe.com/keystone/api/session/signin",
-
-		    dataType: "json",
-
-		    data: {
-		    	'email':"ivanlee99@163.com",
-		    	'password':'lee'
-		    },
-
-		    headers : {'x-csrf-token':$.cookie('XSRF-TOKEN')},
-
-		    // beforeSend: function(xhr) {
-
-		    //     xhr.setRequestHeader("Authorization", "Basic bmVvd2F5Oe4lb3dheQ==");
-
-		    // },
-
-		    success: function(data){ console.log(data) 
-		    	top.location.href='http://manager-service.tis.iyorhe.com/'
-		    },
-
-		    error: function(data){ console.log(data) } ,
-
-		});
+function goToLogin(web) {
+  var websites = [
+    {
+      user_name:'email',
+      user_value:'user@keystonejs.com',
+      password_name:'password',
+      password_value:'admin',
+      loginUrl:'http://manager-service.tis.iyorhe.com/keystone/signin',
+      name:'manager-service',
+    },
+    {
+      user_name:'username',
+      user_value:'871246995@qq.com',
+      password_name:'password',
+      password_value:'654321',
+      loginUrl:'http://kns.cnki.net/kns/logindigital.aspx?ParentLocation=http://www.cnki.net',
+      name:'cnki'
+    },
+    {
+      user_name:'username',
+      user_value:'infinitusPD05',
+      password_name:'password',
+      password_value:'infinitus2017',
+      loginUrl:'http://www.incopat.com/newLogin',
+      name:'incopat'
+    },
+    {
+      user_name:'Username',
+      user_value:'871246995@qq.com',
+      password_name:'Password',
+      password_value:'654321',
+      loginUrl:'http://www.cqvip.com/User/',
+      name:'cqvip'
+    }
+  ]
+  for (let i = 0; i < websites.length; i++) {
+    // if (websites[i].loginUrl.indexOf(location.host)>-1) {
+    if (websites[i].name==web || websites[i].loginUrl == location.href) {
+      if (location.href!=websites[i].loginUrl) {
+        return location.href = websites[i].loginUrl;
+      }
+      autologinWebsite(websites[i]);
+      break;
+    }
+  }
 }
-	function postForm(action,parameter,method) {
-		var p = parameter.split('&&');
-		var s = '';
-		for (var i = 0; i < p.length; i++) {
-			var element = p[i].split('=');
-			var ss = '<input type="hidden" name="' + element[0] + '" value="' + element[1] + '">';
-			s = s + ss;
-		}
-		s = s + '<input type="submit">'
-		var form = '<form action="' + action + '" method="post" id="autologinform">' + s + '</form>';
-		console.log(form);
+function autologinWebsite(web) {
+  var web = web || {
+    user_name:'email',
+    user_value:'user@keystonejs.com',
+    password_name:'password',
+    password_value:'admin',
+    loginUrl:'http://manager-service.tis.iyorhe.com/keystone/'
+  }
+  var input =  document.getElementsByTagName("input")
+  console.log(input)
+  // let event = new Event('input', { bubbles: true });
+  var event = new Event('input', { bubbles: true });
+  // event.simulated = true;
+  input[web.user_name].value = web.user_value;
+  input[web.user_name].dispatchEvent(event);
+  input[web.password_name].value = web.password_value;
+  input[web.password_name].dispatchEvent(event);
+  if (document.querySelector("td input[type='submit']")) {
+    document.querySelector("td input[type='submit']").click();
+  }
+  if (document.querySelector("form button")) {
+    document.querySelector("form button").click();
+  }
+  //合想新创
+  if ( document.querySelector("input[type='submit']")) {
+    document.querySelector("input[type='submit']").click()
+  }
+  if ( document.querySelector("input[type='button']")) {
+    document.querySelector("input[type='button']").click()
+  }
+}
 
-		$(form).appendTo('body');
-		$('#autologinform input[type=submit]').click();
-	}
-
-	function fireEvent(name,value) {
-		 // var username = document.getElementsByName('email')[0];
-		 // var password = document.getElementsByName('password')[0];
-		 var uu = document.getElementsByName(name)[0];
-		 console.log(uu,'user')
-    if(uu.addEventListener){
-        uu.addEventListener('change', function(e){
-            console.log('aaaaaa--change'+name,e);
-        });
-    }
-    else{
-        uu.attachEvent('onchange'+name, function(e){
-            console.log('aaaaaa--onchange',e);
-        });
-    }
-
-    // 设置select默认值
-    uu.focus();
-    uu.value = value;
-    uu.click();
-    uu.blur();
-
-    // 手动触发事件
-    if (uu.fireEvent){
-        uu.fireEvent('onchange');
-    }
-    else{
-        ev = document.createEvent("HTMLEvents");  
-        ev.initEvent("change", false, true);
-        uu.dispatchEvent(ev);
-    }
-	}
+chrome.runtime.onConnect.addListener(function(port) {
+   console.assert(port.name == "haa");
+   port.onMessage.addListener(function(msg) {
+      console.log(msg)
+      var website = msg.website;
+      goToLogin(website);
+   });
+});
+goToLogin();

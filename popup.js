@@ -106,6 +106,9 @@ function saveBackgroundColor(url, color) {
 document.addEventListener('DOMContentLoaded', () => {
   getCurrentTabUrl((url) => {
     var dropdown = document.getElementById('dropdown');
+    var resources = document.getElementsByClassName('resource');
+    console.log(resources);
+    console.log(dropdown);
 
     // Load the saved background color for this page and modify the dropdown
     // value, if needed.
@@ -122,5 +125,36 @@ document.addEventListener('DOMContentLoaded', () => {
       changeBackgroundColor(dropdown.value);
       saveBackgroundColor(url, dropdown.value);
     });
+
+    for (let i = 0; i < resources.length; i++) {
+        console.log(resources[i]);
+      resources[i].addEventListener('click', (e) => {
+        selectWebsite(resources[i].innerText)
+      // changeBackgroundColor(dropdown.value);
+      // saveBackgroundColor(url, dropdown.value);
+    });
+    }
+
   });
 });
+
+function selectWebsite(web) {
+  chrome.tabs.query({active: true, currentWindow: true}, 
+  function(tabs) {
+    var port = chrome.tabs.connect(//建立通道
+      tabs[0].id, 
+      {name: "haa"}//通道名称
+    );
+    port.postMessage({website: web})
+  });
+}
+
+// chrome.tabs.query(
+// {active: true, currentWindow: true}, 
+// function(tabs) {
+// var port = chrome.tabs.connect(//建立通道
+//   tabs[0].id, 
+//   {name: "haa"}//通道名称
+//   );
+//  });
+

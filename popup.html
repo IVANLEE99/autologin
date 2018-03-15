@@ -6,7 +6,8 @@
  -->
 <html>
   <head>
-    <title>Getting Started Extension's Popup</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>请选择自动登录的站点</title>
     <style type="text/css">
       body {
         margin: 10px;
@@ -34,9 +35,15 @@
   </head>
 
   <body>
-    <h1>Background Color Changer</h1>
+    <h1>请选择自动登录的站点</h1>
     <div id="container">
-      <span>Choose a color</span>
+      <span>站点列表：</span>
+      <ul>
+        <li><a href="javascript:void(0);" class="resource">manager-service</a></li>
+        <li><a href="javascript:void(0);" class="resource">cnki</a></li>
+        <li><a href="javascript:void(0);" class="resource">cqvip</a></li>
+        <li><a href="javascript:void(0);" class="resource">incopat</a></li>
+      </ul>
       <select id="dropdown">
         <option selected disabled hidden value=''></option>
         <option value="white">White</option>
